@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import com.intuit.karate.junit4.Karate;
+import cucumber.api.CucumberOptions;
 import neilpiper.me.MicroserviceReference;
 
 @RunWith(Karate.class)

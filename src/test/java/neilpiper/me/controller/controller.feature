@@ -42,12 +42,10 @@ And request
 """
 When method put
 Then status 204
-# And match response contains user
 
 Given url location
 When method delete
 Then status 200
-# And match response contains user
 
 Scenario: Get a list of Inventory Summaries
 
@@ -55,9 +53,9 @@ Given path 'depot/10001/inventory_summaries'
 When method get
 Then status 200
 
+
 Scenario: Get a non-existent Summary
 
 Given path 'depot/10001/inventory_summaries/888888888888'
 When method get
 Then status 404
-
