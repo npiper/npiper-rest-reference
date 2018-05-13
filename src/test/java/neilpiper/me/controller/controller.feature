@@ -28,6 +28,7 @@ Then status 201
 * def location = responseHeaders['Location'][0]
 * print 'created id is: ' + location
 
+
 Given url location
 When method get
 Then status 200
@@ -46,6 +47,7 @@ Then status 204
 Given url location
 When method delete
 Then status 200
+
 
 Scenario: Get a list of Inventory Summaries
 
