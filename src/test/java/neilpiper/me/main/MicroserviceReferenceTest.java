@@ -43,7 +43,6 @@ public class MicroserviceReferenceTest {
 
 
   @Test
-  @Ignore
   public void shouldReturn200WhenSendingRequestToManagementEndpoint() throws Exception {
     @SuppressWarnings("rawtypes")
     ResponseEntity<Map> entity =
@@ -53,11 +52,10 @@ public class MicroserviceReferenceTest {
   }
 
   @Test
-  @Ignore
   public void shouldReturn200WhenGettingInventorySummary() throws Exception {
     @SuppressWarnings("rawtypes")
     ResponseEntity<Map> entity = this.testRestTemplate.getForEntity(
-        "http://localhost:" + this.port + "/depot/111/invenvtory_summaries/10001", Map.class);
+        "http://localhost:" + this.port + "/depot/111/inventory_summaries/10001", Map.class);
     
     //{id=10001, inventoryLocation=BRADFORD}
 
