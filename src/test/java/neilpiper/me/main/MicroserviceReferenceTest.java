@@ -3,7 +3,6 @@ package neilpiper.me.main;
 import static org.assertj.core.api.BDDAssertions.then;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +55,8 @@ public class MicroserviceReferenceTest {
     @SuppressWarnings("rawtypes")
     ResponseEntity<Map> entity = this.testRestTemplate.getForEntity(
         "http://localhost:" + this.port + "/depot/111/inventory_summaries/10001", Map.class);
-    
-    //{id=10001, inventoryLocation=BRADFORD}
+
+    // {id=10001, inventoryLocation=BRADFORD}
 
     then(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
   }

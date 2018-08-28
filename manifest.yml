@@ -1,0 +1,6 @@
+---
+applications:
+- name: npiper-rest-reference 
+  memory: 512M 
+  random-route: true
+  path: target/npiper-rest-reference-0.0.1-0-SNAPSHOT.jar

@@ -7,7 +7,7 @@
 	<groupId>neilpiper.me</groupId>
 	<artifactId>npiper-rest-reference</artifactId>
 	<version>0.0.1-${revision}</version>
-
+        <packaging>jar</packaging>
 	<name>npiper-rest-reference</name>
 	<parent>
 		<groupId>neilpiper.me</groupId>
