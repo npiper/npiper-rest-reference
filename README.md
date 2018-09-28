@@ -264,6 +264,8 @@ We will start at Version 1 to align to Spring Boot v1.
 
 ### Microservices
 
+[Java schema.org parser](https://github.com/google/schemaorg-java)
+
 ### 12 Factor Apps & Containers
 
 
