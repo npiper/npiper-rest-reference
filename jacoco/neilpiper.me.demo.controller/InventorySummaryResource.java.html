@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventorySummaryResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">npiper-rest-reference</a> &gt; <a href="index.source.html" class="el_package">neilpiper.me.demo.controller</a> &gt; <span class="el_source">InventorySummaryResource.java</span></div><h1>InventorySummaryResource.java</h1><pre class="source lang-java linenums">package neilpiper.me.demo.controller;
+
+import java.net.URI;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import neilpiper.me.demo.domain.InventorySummary;
+import neilpiper.me.demo.repository.InventorySummaryRepository;
+
+@RestController
+<span class="fc" id="L19">public class InventorySummaryResource {</span>
+
+  @Autowired
+  private InventorySummaryRepository inventoryRepository;
+
+  @GetMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
+  public ResponseEntity&lt;InventorySummary&gt; getSummaryById(@PathVariable String depotId,
+      @PathVariable String summaryId) {
+<span class="fc" id="L27">    InventorySummary summary = inventoryRepository.findOne(Long.parseLong(summaryId));</span>
+
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">    if (summary == null) {</span>
+<span class="nc" id="L30">      return ResponseEntity.notFound().build();</span>
+    }
+<span class="fc" id="L32">    return ResponseEntity.ok(summary);</span>
+
+  }
+
+
+  // @ApiOperation(value = &quot;Find Depot Inventory Summaries&quot;,
+  // notes = &quot;Get a list of the Inventory Summaries for the depot.&quot;)
+  // @RequestMapping(value = &quot;/depot/{depotId}/inventory_summaries&quot;, method = RequestMethod.GET)
+  @GetMapping(&quot;/depot/{depotId}/inventory_summaries&quot;)
+  public List&lt;InventorySummary&gt; retrieveInventorySummaries(@PathVariable String depotId) {
+<span class="nc" id="L42">    return inventoryRepository.findAll();</span>
+  }
+
+  @DeleteMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
+  public void deleteStudent(@PathVariable long depotId, @PathVariable long summaryId) {
+<span class="nc" id="L47">    inventoryRepository.delete(summaryId);</span>
+<span class="nc" id="L48">  }</span>
+
+  @PostMapping(&quot;/depot/{depotId}/inventory_summaries&quot;)
+  public ResponseEntity&lt;Object&gt; createStudent(@RequestBody InventorySummary summary,
+      @PathVariable long depotId) {
+
+<span class="nc" id="L54">    InventorySummary savedSummary = inventoryRepository.save(summary);</span>
+
+    // Return a location with the new Id
+<span class="nc" id="L57">    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;)</span>
+<span class="nc" id="L58">        .buildAndExpand(savedSummary.getId()).toUri();</span>
+
+<span class="nc" id="L60">    return ResponseEntity.created(location).build();</span>
+
+  }
+
+  @PutMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
+  public ResponseEntity&lt;Object&gt; updateInventorySummary(@RequestBody InventorySummary summary,
+      @PathVariable long depotId, @PathVariable long summaryId) {
+
+<span class="nc" id="L68">    InventorySummary summaryOptional = inventoryRepository.findOne(summaryId);</span>
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">    if (summaryOptional == null)</span>
+<span class="nc" id="L71">      return ResponseEntity.notFound().build();</span>
+
+<span class="nc" id="L73">    summary.setId(summaryId);</span>
+
+<span class="nc" id="L75">    inventoryRepository.save(summaryOptional);</span>
+
+<span class="nc" id="L77">    return ResponseEntity.noContent().build();</span>
+  }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
