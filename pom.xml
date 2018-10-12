@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>neilpiper.me</groupId>
 		<artifactId>rest.microservice.base</artifactId>
-		<version>0.1.0_22.2013488</version>
+		<version>0.1.0_29.1af0fa4</version>
 	</parent>
 
 	<dependencies>
@@ -45,14 +45,17 @@
 	<!-- REPOSITORIES & PLUGIN REPOSITORIES -->
 	<repositories>
 		<!-- public release repo -->
+		<!-- 
 		<repository>
 			<id>solveapuzzle-repo</id>
 			<url>https://s3-ap-southeast-2.amazonaws.com/solveapuzzle-repo/release/</url>
 		</repository>
+		-->
 	</repositories>
 
+
 	<scm>
-		<url>https://github.com/npiper/hello-world</url>
+		<url>https://github.com/npiper/npiper-rest-reference</url>
 		<developerConnection>scm:git:https://github.com/npiper/npiper-rest-reference.git</developerConnection>
 	</scm>
 </project>
