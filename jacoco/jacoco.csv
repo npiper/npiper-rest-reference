@@ -1,4 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-npiper-rest-reference,neilpiper.me.demo.domain,InventorySummary,8,9,0,0,0,3,2,3,2,3
-npiper-rest-reference,neilpiper.me.demo.controller,InventorySummaryResource,60,16,3,1,14,4,6,2,4,2
-npiper-rest-reference,neilpiper.me,MicroserviceReference,5,17,0,0,2,4,1,3,1,3
