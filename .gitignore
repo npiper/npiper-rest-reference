@@ -2,7 +2,9 @@
 .project
 .classpath
 /.settings
-/.bin
+/bin
+.pmd
+.pmdruleset.xml
 
 # Maven files
 /target
