@@ -45,12 +45,12 @@
 	<!-- REPOSITORIES & PLUGIN REPOSITORIES -->
 	<repositories>
 		<!-- public release repo -->
-		<!-- 
+		
 		<repository>
 			<id>solveapuzzle-repo</id>
 			<url>https://s3-ap-southeast-2.amazonaws.com/solveapuzzle-repo/release/</url>
 		</repository>
-		-->
+	
 	</repositories>
 
 
