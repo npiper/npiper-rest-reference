@@ -5,16 +5,28 @@ services:
 branches:
   except:
   - "/^[0-9]/"
+  
 before_script:
 - git config --global user.name "${GIT_USER_NAME}"
 - git config --global user.email "${GIT_USER_EMAIL}"
 - cp .travis.settings.xml $HOME/.m2/settings.xml
-script:
-if: branch != master OR pull_request = true
- - mvn clean install -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD)
 
-if: branch = master AND pull_request = false
- - mvn clean install -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD) deploy scm:tag -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD) -Dusername="${GIT_USER_NAME}" -Dpassword="${GITPW}"
+stages:
+  - name: devbuild
+    if: branch != master
+  - name: masterdeploy
+    if: branch = master
+  
+jobs:
+  include:
+    - stage: devbuild                
+      name: "Development Build"            
+      script: mvn clean install -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD)
+
+    - stage: masterdeploy
+      name: "build master, site and deploy"
+      script: mvn clean install -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD) deploy scm:tag -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD) -Dusername="${GIT_USER_NAME}" -Dpassword="${GITPW}"
+
 
 env:
   global:
