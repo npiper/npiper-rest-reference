@@ -6,13 +6,13 @@
 
 	<groupId>neilpiper.me</groupId>
 	<artifactId>npiper-rest-reference</artifactId>
-	<version>0.0.1-${revision}</version>
+	<version>0.0.2-${revision}</version>
         <packaging>jar</packaging>
 	<name>npiper-rest-reference</name>
 	<parent>
 		<groupId>neilpiper.me</groupId>
 		<artifactId>rest.microservice.base</artifactId>
-		<version>0.1.0_32.02fcc81</version>
+		<version>0.2.0_41.346ffc4</version>
 	</parent>
 
 	<dependencies>
@@ -58,4 +58,14 @@
 		<url>https://github.com/npiper/npiper-rest-reference</url>
 		<developerConnection>scm:git:https://github.com/npiper/npiper-rest-reference.git</developerConnection>
 	</scm>
+	
+	  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

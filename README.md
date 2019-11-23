@@ -83,7 +83,7 @@ If you are building a Spring Boot based microservice for the program - use this 
 <parent>
     <groupId>neilpiper.me</groupId>
 	<artifactId>rest.microservice.base</artifactId>
-	<version>0.1.0_22.2013488</version>
+	<version>0.2.0_41.346ffc4</version>
 </parent>
 ```
 
@@ -268,6 +268,11 @@ We will start at Version 1 to align to Spring Boot v1.
 
 ### 12 Factor Apps & Containers
 
+### RAML
+
+https://github.com/raml-org/raml-spec/blob/master/versions/raml-10/raml-10.md/#using-xml-and-json-schema
+
+https://www.baeldung.com/modular-raml-includes-overlays-libraries-extensions
 
 ### Where to read about the technologies?
 
