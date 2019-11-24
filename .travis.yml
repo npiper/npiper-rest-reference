@@ -5,32 +5,36 @@ services:
 branches:
   except:
   - "/^[0-9]/"
-  
 before_script:
 - git config --global user.name "${GIT_USER_NAME}"
 - git config --global user.email "${GIT_USER_EMAIL}"
 - cp .travis.settings.xml $HOME/.m2/settings.xml
-
 stages:
-  - name: devbuild
-    if: branch != master
-  - name: masterdeploy
-    if: branch = master
-  
+- name: devbuild
+  if: branch != master
+- name: masterdeploy
+  if: branch = master
+- name: dockerpkg
+  if: branch = master
 jobs:
   include:
-    - stage: devbuild                
-      name: "Development Build"            
-      script: mvn clean install -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD)
-
-    - stage: masterdeploy
-      name: "build master, site and deploy"
-      script: mvn clean install scm:tag deploy site -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD) -Dusername="${GIT_USER_NAME}" -Dpassword="${GITPW}"
-
-
+  - stage: devbuild
+    name: Development Build
+    script: mvn clean install jib:dockerBuild -Drevision=${TRAVIS_BUILD_NUMBER}.$(git
+      rev-parse --short HEAD)
+  - stage: masterdeploy
+    name: build master, site and deploy
+    script: mvn clean install jib:dockerBuild scm:tag deploy site -Drevision=${TRAVIS_BUILD_NUMBER}.$(git
+      rev-parse --short HEAD) -Dusername="${GIT_USER_NAME}" -Dpassword="${GITPW}"
+  - stage: dockerpkg
+    name: test docker package
+    script: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      && docker images && docker push npiper/npiper-rest-reference
 env:
   global:
   - secure: SmmmsCVa4rRNQP146ky2TMDFnBvtlUFFJy0kk6yV4zetsd901e/GVdg1X4N6UkyPWL8JAmLlRSxI6U1xX5XUQHVisPeDgkSBV9TteeTjoia++fR5ur/ujXcMkUnSY0Kchtt59tR4a49IO5J4oEIMYfxLii7AC1lfGgt0U6TEHQS+Qp84JeSlm5rpWexIyLUsv3MkbsAlEa7RDb7aYX/Gq6XKKpFEtmHMLEJBfwQxHo7UFi00WqRhiIILrY34NRfJbpl8dpqFf1TxJb6fzL0LgQKonjcsnxKwNjLOa9apcrsTFb615CnraUGvKn42vXqva0RQckQC9iJXuq/d7e/aDy6iYRTShxJx6HA5GoDhBXdRajw/tPTAovRzewJW7xefgXzgosAWFfS98p3lMH8xeaGJQ/PeP8+E6NXFa2Ote38Bx6KBrZ28P33sEebpXkI4pni2UPkxWVOYIhiE5eBeZ1xVnAoeFRP6PTAEm0Vxt/UEuUErn4WF+G/Sahl4KTIAl0B2hzl4jGCyYsNm3qsQKREb0iDVmhW/nkSqUZC4jVuH0sFnpxm2jH3ziMkPOgBwN/tZhng/Rk5Jm2p1A9lxb+iCuI9g3kq9cYssUoXGkEwqt8fzUMkya4b4EYGgnjBlk0QSgwYoODT7QRF/at99RwATndoHgMFwyRev3vWYfs4=
   - secure: Ab1TlSM9CDDFgBWSt9Ails7/cawzqJw1he4dWJHeTTHhOyGW8i03Gqs8nrYa1w3YBPyyJO3WvMlGvjwpYaeb3Fl7fUKcZmAgjjd5fTuyjH77+fIbyX4uxC/G1TMKHcrZeocsgAsJ3OmmCCY1UH2vhr+AL+fkAQ9q2XcFHsX504vjyKCljFhXOFn+84RUmhAKJlgunRQTqkS6c5USD+M5KSXeWetSd3camFwycWwUwCjjA8tSp5Efa0ctBIN77AM+bseVy0wKLlZLH9iE5jDo39UO3WHU0QYPkYAErPfd2hLWckfmZzzshGcTs4pbEOTGBn3TQQrNPxB4+fVOyHUg1dIiVvSkgVblun/MUrNZMrUP1WnmatTRqUw+7kaFCUeAc40UPqAtPC/TRVvm40nJlKPYf5OU5XrJkchU2pUISMQ1v1KbVAMU7hx1mT4Yay1R8t+unK6pjI+YM9Tu7UhQDcVuK4ZsFzfm2ZxDfcv3rVWQokSGqFbLTKbUxzQBKOjUOmcDkP98sOhL6ZPnpfL6e5abjssKizc8jV7VEosqNZKEDTq+EsDwiL0nPcWVmQv0rB9jThjUmeLnjW+dQCdsdNCIirIzIvGc/O1KJQESh0MlSf1Od6DmE7wSHZabGeyFbRPGi/Xay7bZA41YSiMh+qRNhoRYDz3GSgGjmbPX3zs=
   - secure: i4KJeZ2zRDczsrw9crBshDkLYEMpQ80TArlsl+hgQWTeRMUkGN6G6pyABkplF49rt8SUI8xz3i3jqTLOLMHJ10WEMuA15T4t+eUIRfD7dtZBpBZuHi2Hrtv+ffZRwEUlPlfYV65OZU/GwvIv35IZCMq30sCLpxEm1b2bxuiF0QE/ZHCJraOJwBd7FxMGlBSUoPF4YV0LK6AuaH3FslmqQRoUnzz7g/Of/2AqB2ooQSSenR6e/ny8MlCvKovNRymmcTMmyXiYit3iJOvfTqXoJX4BwhdkqRIX+Tmz7oWRJJEfeNDMnHpxAK2x58kFnlzzl/AiLtHJzGMewk2a8Wk0jXmlVrO2M/VPRGRCMLVL886y6hB/ZuoY0JZhgtR6pM9QvVk3qlKWWIkT5ewYZerUudZpHLzDdXqhuxJR1CuNtWmlwl+bOeGesPH+UHq7JofC8bvxRZ4CAI5M9rkcDSRCTY5139b1v2N6Udy5RN1s5QMpQN0XgtlWFH751T9jVwvACrK3/Zl4Ykbeybf6lGppnXraXDtw04NPhJ5bMSC61DdGpPruEhpUIv4AwRFnTLVIpY6fux/A586MKKTHymryDqafhsyg6yqqiI0bW0GnRrG6jpbPiE7M/AhOM3MCo5u9Qg2DCy/o1K4lrKoLJvJsBZ53XUlCpgOSI+t4PBzEoxU=
   - secure: QQFB2IAyOAB4rThoC0V7CFLj2P8KQtAqNoK1aXWSqHplnhCSjY5bxXAzyFK4KddEbOMGrKyNKHjO52LtR5kmaNWGlTbdBWHdlBgzBZVYn0aSbN4rHRDvSgEhwFfTuCh2DAOlWkIue4Qpfz+vdJG5NhMzIv6TQar3ligtcmWjmUhDGu7NPfQgROFsqfyQE8CVzBksk8NYP5jberrp8CuiOYVFuBVce/oosVdZHHKuxOYxTvoD6KtieTOdNYKpayMJt+QP5v+XBQpkNyxabqLA/bCoADziL/zzo59wg/bun+LHyBAdNTxAbr58oCdzVtryIQPNc5pq+2sLuZ+WcNyOi4LbgKj3v0nWNZebWLIYkgQPp21WmkFgajZp+CDfu7zEgqgg9A9maymKrkBbj4wLY3u6SzD4lna2sq/Ebw+MwRFkKTg384Zgfr44VN6uaMu3buiJ3vAVUD9Evqfod3AO3JtfuQbm3VS0nb+65xc9Cdzn0ov3OwXDmWsggEi6sqQR9o8rouPEjSn/219EmOXQw3hL+9HRpXZVOy69X7Dl2Wrk4Bf3i4Ikj6p7Qj12yCoaCrY5aybbbwusaLWUoT/FwdVk2X5NjgaTH5+rCwyv6G5mpekRKu+XLSw3ZNDSV/iNfV5RoYJOrzNHG98zS9vW3+0kYbOO+/3V0jdaZfs1Fv4=
+  - secure: jFMKLGUo/SIZt1HZY5LXSESk1wGDa2ANtdivEAUzQRvSgI11gITFSNvbRADwvUT7kMV2jrMhF3eKmd+cU7tgeYq6VDBXpaRvRLpx9M5g9bwtWK/h+jdeevNOqPu+zhwbV5U89v3L5VjHSoJXE083z/Yg4LPE3sQCE+nQVrl4QCDxicqy6xaMuhLLjosYcDtF9xAz9YNYARfcirlyp2dInKwNhqBzTffNhHIcxrou5ePYwUNf0hIw+dRZHBuV0zJkHa247nyydbIgOHdj6u/4flWa9SORBie8kVh2cruvdnKGY3qBmAo68S2SneEGmeDe+DZz4GKWjUd/bWHevcmbQas0oRFnqy5ctlKrEetuQv8pcCHuYVGcAII4WGZRZy2UuWXJZsOgURv0jkXzv3g5GIZzSIEwAXT7fFJgDygFsWRbS8vFrtwwicwdyuiThuhjQkumx8SA5Bd8tv/afyr5eeze2WlGf+HQ8E+YpRxuMdITmHnNGPKNfDusAO5Pxge6IM9PTXFnpXQEufxNiPycK/XRYfNTKXJByL2cjBq+gt8sVQZI6vrNVJampx0ERZsP3ewgPK4kXzFWJPRTmC97xgKj2c06qrRitZK0MttUO80RxoSXWJ6T+4YYy0tEHoGg7uIbVzJ4G65u0FBiLeYdq4+M/r0FiP+iPfG1YLe8t1c=
+  - secure: A08Ruh7nLAlfjD09ZwZ1SVXU0wd1FTexO8bNAuQx8rIwZZGlVyT31GLwTQawyw4jRHKD9CLcGX4dKsuYDoml8OOkV2N5eY2ftFfFmO8rxku8yXrGM3S1KxcQ0sE1/l0FqrF0vXLOJDLj6xLqNvfrCG5XtanWn/NoGycNO+rjfhS5aAE0J1KoHmSetT4xQUYNtccBjjDtgRCfRpIsHDwxOxafh8zqtzVz5Q9cvWOWFNOSCLGutWVYtIRJKmN72q3gGrG8vSKzc759FdUSrUEfosjIqVEVfaM+uZiM5k6suw9rcNqfB56krRApVQLNU7X0l5hIPAg3r42Mln0pftCzAZTqJppBeKX5YAKOmdEGUI0yst1e/EEEIj9TAwSjzwBeKIOBE0tcNi9rf++qxOcyq/ZDIRgvo2PfQJfyTV04kEJU0FwFyf34o+cpXZLXTYzjKKeqP2udvp9nkbqGCz1C5hWqQE1BSLAyUw9Cb2JhrUT06Gu+EhqFhfJt+LQhU7v5rXM/bAGMBhWcw5jB8FbFbRmm52LiKLItkQQVHS/bS95ofDm7NNUHryeeGU+B7CY+OGYT8zKPzWBvMJEES77HF0bPiFRqz7Vgv94m0sbCeMhsMdyK9/gVL2Vt7OM84ZycH99rfagKE4iNxQvDjtYrKBwVFueHZmRROShqQjZY6mc=
