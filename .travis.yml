@@ -14,8 +14,7 @@ stages:
   if: branch != master
 - name: masterdeploy
   if: branch = master
-- name: dockerpkg
-  if: branch = master
+
 jobs:
   include:
   - stage: devbuild
@@ -24,12 +23,10 @@ jobs:
       rev-parse --short HEAD)
   - stage: masterdeploy
     name: build master, site and deploy
-    script: mvn clean install jib:dockerBuild scm:tag deploy site -Drevision=${TRAVIS_BUILD_NUMBER}.$(git
-      rev-parse --short HEAD) -Dusername="${GIT_USER_NAME}" -Dpassword="${GITPW}"
-  - stage: dockerpkg
-    name: test docker package
-    script: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-      && docker images && docker push npiper/npiper-rest-reference
+    script: 
+     - mvn clean install jib:dockerBuild scm:tag deploy site -Drevision=${TRAVIS_BUILD_NUMBER}.$(git rev-parse --short HEAD) -Dusername="${GIT_USER_NAME}" -Dpassword="${GITPW}"
+     - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin && docker images && docker push npiper/npiper-rest-reference
+
 env:
   global:
   - secure: SmmmsCVa4rRNQP146ky2TMDFnBvtlUFFJy0kk6yV4zetsd901e/GVdg1X4N6UkyPWL8JAmLlRSxI6U1xX5XUQHVisPeDgkSBV9TteeTjoia++fR5ur/ujXcMkUnSY0Kchtt59tR4a49IO5J4oEIMYfxLii7AC1lfGgt0U6TEHQS+Qp84JeSlm5rpWexIyLUsv3MkbsAlEa7RDb7aYX/Gq6XKKpFEtmHMLEJBfwQxHo7UFi00WqRhiIILrY34NRfJbpl8dpqFf1TxJb6fzL0LgQKonjcsnxKwNjLOa9apcrsTFb615CnraUGvKn42vXqva0RQckQC9iJXuq/d7e/aDy6iYRTShxJx6HA5GoDhBXdRajw/tPTAovRzewJW7xefgXzgosAWFfS98p3lMH8xeaGJQ/PeP8+E6NXFa2Ote38Bx6KBrZ28P33sEebpXkI4pni2UPkxWVOYIhiE5eBeZ1xVnAoeFRP6PTAEm0Vxt/UEuUErn4WF+G/Sahl4KTIAl0B2hzl4jGCyYsNm3qsQKREb0iDVmhW/nkSqUZC4jVuH0sFnpxm2jH3ziMkPOgBwN/tZhng/Rk5Jm2p1A9lxb+iCuI9g3kq9cYssUoXGkEwqt8fzUMkya4b4EYGgnjBlk0QSgwYoODT7QRF/at99RwATndoHgMFwyRev3vWYfs4=
