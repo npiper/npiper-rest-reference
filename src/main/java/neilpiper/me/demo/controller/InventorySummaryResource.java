@@ -2,6 +2,8 @@ package neilpiper.me.demo.controller;
 
 import java.net.URI;
 import java.util.List;
+import neilpiper.me.demo.domain.InventorySummary;
+import neilpiper.me.demo.repository.InventorySummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,15 +14,26 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import neilpiper.me.demo.domain.InventorySummary;
-import neilpiper.me.demo.repository.InventorySummaryRepository;
 
+/**
+ * Rest API for the InventorySummary Resource.
+ * 
+ * @author neilpiper
+ *
+ */
 @RestController
 public class InventorySummaryResource {
 
   @Autowired
   private InventorySummaryRepository inventoryRepository;
 
+  /**
+   * Get a summary by ID.
+   * 
+   * @param depotId ID for the depot
+   * @param summaryId ID for the summary.
+   * @return
+   */
   @GetMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public ResponseEntity<InventorySummary> getSummaryById(@PathVariable String depotId,
       @PathVariable String summaryId) {
@@ -33,7 +46,12 @@ public class InventorySummaryResource {
 
   }
 
-
+  /**
+   * Retrieve a list of Inventory Summaries.
+   * 
+   * @param depotId ID of the depot
+   * @return List of Inventory summaries.
+   */
   // @ApiOperation(value = "Find Depot Inventory Summaries",
   // notes = "Get a list of the Inventory Summaries for the depot.")
   // @RequestMapping(value = "/depot/{depotId}/inventory_summaries", method = RequestMethod.GET)
@@ -42,11 +60,24 @@ public class InventorySummaryResource {
     return inventoryRepository.findAll();
   }
 
+  /**
+   * Delete an Inventory summary from the Depot.
+   * 
+   * @param depotId ID of the depot
+   * @param summaryId ID of the inventory summary.
+   */
   @DeleteMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public void deleteStudent(@PathVariable long depotId, @PathVariable long summaryId) {
     inventoryRepository.delete(summaryId);
   }
 
+  /**
+   * Create a new Inventory Summary.
+   * 
+   * @param summary Summary information body.
+   * @param depotId ID of depot to add to.
+   * @return
+   */
   @PostMapping("/depot/{depotId}/inventory_summaries")
   public ResponseEntity<Object> createStudent(@RequestBody InventorySummary summary,
       @PathVariable long depotId) {
@@ -61,6 +92,14 @@ public class InventorySummaryResource {
 
   }
 
+  /**
+   * Update an existing inventory summary.
+   * 
+   * @param summary Summary details.
+   * @param depotId Depot ID.
+   * @param summaryId ID of the summary.
+   * @return
+   */
   @PutMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public ResponseEntity<Object> updateInventorySummary(@RequestBody InventorySummary summary,
       @PathVariable long depotId, @PathVariable long summaryId) {
