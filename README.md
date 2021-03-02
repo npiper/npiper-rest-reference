@@ -29,12 +29,12 @@ location →
 http://{HOSTNAME:PORT}/depot/10001/inventory_summaries/1
 
 ```
-GET http://{HOSTNAME:PORT}/depot/10001/inventory_summaries/1
+GET http://{HOSTNAME:PORT}/depot/10001/inventory_summaries/10001
 
 Response Body:
 {
-    "id": 1,
-    "inventoryLocation": "BRISTOL"
+    "id": 10001,
+    "inventoryLocation": "BRADFORD"
 }
 ```
 
@@ -83,7 +83,7 @@ If you are building a Spring Boot based microservice for the program - use this 
 <parent>
     <groupId>neilpiper.me</groupId>
 	<artifactId>rest.microservice.base</artifactId>
-	<version>0.2.0_41.346ffc4</version>
+	<version>[1.0,2.0)</version>
 </parent>
 ```
 

@@ -1,53 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>npiper-rest-reference</artifactId>
-	<version>0.0.3</version>
-        <packaging>jar</packaging>
+	<version>0.1.0</version>
+	<packaging>jar</packaging>
 	<name>npiper-rest-reference</name>
 	<parent>
 		<groupId>neilpiper.me</groupId>
 		<artifactId>rest.microservice.base</artifactId>
-		<version>(,1.0]</version>
+		<version>[1.0,2.0)</version>
 	</parent>
 
+	<properties>
+		<springdoc.version>1.5.4</springdoc.version>
+		<jackson.version>2.10.1</jackson.version>
+		<spring-boot.version>1.5.22.RELEASE</spring-boot.version>
+	</properties>
+
 	<dependencies>
+	<!-- 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-dependencies</artifactId>
+			<version>${spring-boot.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		 -->
+
+<!--  Java 9+ Additions -->
+<dependency>
+    <groupId>javax.xml.bind</groupId>
+     <artifactId>jaxb-api</artifactId>
+    <version>2.3.0</version>
+ </dependency>
+
+
+<dependency>
+    <groupId>org.javassist</groupId>
+    <artifactId>javassist</artifactId>
+    <version>3.23.1-GA</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
-		
-		<dependency>
-  <groupId>ch.qos.logback</groupId>
-  <artifactId>logback-classic</artifactId>
-  <scope>test</scope>
-</dependency>
-<dependency>
-  <groupId>ch.qos.logback</groupId>
-  <artifactId>logback-core</artifactId>
-  <scope>test</scope>
-</dependency>
 
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 	</dependencies>
-	
+
+	<build>
+		<plugins>
+
+
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <version>3.0.0</version>
+    <executions>
+        <execution>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>add-source</goal>
+            </goals>
+            <configuration>
+                <sources>
+                    <source>target/generated-sources/swagger/swagger</source>
+                </sources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+
+			<plugin>
+				<groupId>io.swagger.codegen.v3</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>3.0.24</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/api/user-api.yaml</inputSpec>
+							<language>spring</language>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<sourceFolder>swagger</sourceFolder>
+								<java8>true</java8>
+								<modelPackage>neilpiper.me.demo.model</modelPackage>
+								<apiPackage>neilpiper.me.demo.api</apiPackage>
+								<interfaceOnly>false</interfaceOnly>
+								<delegatePattern>true</delegatePattern>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
 
 
 	<!-- REPOSITORIES & PLUGIN REPOSITORIES -->
 	<repositories>
 		<!-- public release repo -->
-		
+
 		<repository>
 			<id>solveapuzzle-repo</id>
 			<url>https://s3-ap-southeast-2.amazonaws.com/solveapuzzle-repo/release/</url>
 		</repository>
-	
+
 	</repositories>
 
 
@@ -55,5 +149,5 @@
 		<url>https://github.com/npiper/npiper-rest-reference</url>
 		<developerConnection>scm:git:https://github.com/npiper/npiper-rest-reference.git</developerConnection>
 	</scm>
-	
+
 </project>

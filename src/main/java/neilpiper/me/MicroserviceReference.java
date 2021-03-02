@@ -1,19 +1,18 @@
 package neilpiper.me;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import com.google.common.base.Predicates;
-import neilpiper.me.demo.controller.InventorySummaryResource;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.http.codec.ServerCodecConfigurer;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+
 
 /**
  * Spring application reference for the Microservice base package.
@@ -22,9 +21,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  *
  */
 @SpringBootApplication
-@EnableSwagger2
-@ComponentScan(basePackageClasses = {InventorySummaryResource.class})
-public class MicroserviceReference implements CommandLineRunner {
+@ComponentScan(basePackages= {"neilpiper.me.demo.controller","neilpiper.me.demo.api","neilpiper.me.demo.service"})
+public class MicroserviceReference {
 
   @Autowired
   Environment environment;
@@ -38,24 +36,25 @@ public class MicroserviceReference implements CommandLineRunner {
     SpringApplication.run(MicroserviceReference.class, args);
   }
 
-  /**
-   * Creates the swagger configuration bean.
-   * 
-   * @return Docket response
-   */
+
+
+
   @Bean
-  public Docket appApi() {
-    return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-        .paths(Predicates.not(PathSelectors.regex("/health"))).build();
-
-
-
+  public OpenAPI customOpenAPI(@Value("${springdoc.version}") String appVersion) {
+      return new OpenAPI()
+              .components(new Components())
+              .info(new Info().title("Books API").version(appVersion)
+                      .license(new License().name("Apache 2.0").url("http://springdoc.org")));
   }
+  
 
-  public void run(String... arg0) throws Exception {
-    // TODO Auto-generated method stub
 
+  @Bean
+  public ServerCodecConfigurer serverCodecConfigurer() {
+     return ServerCodecConfigurer.create();
   }
+  
+ 
 
 
 
