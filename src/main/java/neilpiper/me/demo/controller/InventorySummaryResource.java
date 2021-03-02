@@ -2,8 +2,6 @@ package neilpiper.me.demo.controller;
 
 import java.net.URI;
 import java.util.List;
-import neilpiper.me.demo.domain.InventorySummary;
-import neilpiper.me.demo.repository.InventorySummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import neilpiper.me.demo.domain.InventorySummary;
+import neilpiper.me.demo.repository.InventorySummaryRepository;
 
 /**
  * Rest API for the InventorySummary Resource.
@@ -37,12 +37,17 @@ public class InventorySummaryResource {
   @GetMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public ResponseEntity<InventorySummary> getSummaryById(@PathVariable String depotId,
       @PathVariable String summaryId) {
-    InventorySummary summary = inventoryRepository.findOne(Long.parseLong(summaryId));
 
-    if (summary == null) {
+    try
+    {
+     InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));
+     return ResponseEntity.ok(summary);
+    }
+    catch (javax.persistence.EntityNotFoundException nfe)
+    {
       return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(summary);
+
 
   }
 
@@ -68,7 +73,9 @@ public class InventorySummaryResource {
    */
   @DeleteMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public void deleteStudent(@PathVariable long depotId, @PathVariable long summaryId) {
-    inventoryRepository.delete(summaryId);
+
+    inventoryRepository.deleteById(Long.valueOf(summaryId));
+
   }
 
   /**
@@ -104,7 +111,7 @@ public class InventorySummaryResource {
   public ResponseEntity<Object> updateInventorySummary(@RequestBody InventorySummary summary,
       @PathVariable long depotId, @PathVariable long summaryId) {
 
-    InventorySummary summaryOptional = inventoryRepository.findOne(summaryId);
+    InventorySummary summaryOptional = inventoryRepository.getOne(Long.valueOf(summaryId));
 
     if (summaryOptional == null)
       return ResponseEntity.notFound().build();
