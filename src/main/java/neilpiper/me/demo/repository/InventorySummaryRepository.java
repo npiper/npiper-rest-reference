@@ -1,11 +1,12 @@
 package neilpiper.me.demo.repository;
 
+import neilpiper.me.demo.domain.InventorySummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import neilpiper.me.demo.domain.InventorySummary;
 
-/** Repository interface for the InventorySummary Resource
- * 
+
+/** Repository interface for the InventorySummary Resource.
+ *
  * @author neilpiper
  *
  */
