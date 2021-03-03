@@ -2,6 +2,8 @@ package neilpiper.me.demo.controller;
 
 import java.net.URI;
 import java.util.List;
+import neilpiper.me.demo.domain.InventorySummary;
+import neilpiper.me.demo.repository.InventorySummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,12 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import neilpiper.me.demo.domain.InventorySummary;
-import neilpiper.me.demo.repository.InventorySummaryRepository;
 
 /**
  * Rest API for the InventorySummary Resource.
- * 
+ *
  * @author neilpiper
  *
  */
@@ -29,7 +29,7 @@ public class InventorySummaryResource {
 
   /**
    * Get a summary by ID.
-   * 
+   *
    * @param depotId ID for the depot
    * @param summaryId ID for the summary.
    * @return
@@ -38,13 +38,10 @@ public class InventorySummaryResource {
   public ResponseEntity<InventorySummary> getSummaryById(@PathVariable String depotId,
       @PathVariable String summaryId) {
 
-    try
-    {
-     InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));
-     return ResponseEntity.ok(summary);
-    }
-    catch (javax.persistence.EntityNotFoundException nfe)
-    {
+    try {
+      InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));
+      return ResponseEntity.ok(summary);
+    } catch (javax.persistence.EntityNotFoundException nfe) {
       return ResponseEntity.notFound().build();
     }
 
@@ -53,7 +50,7 @@ public class InventorySummaryResource {
 
   /**
    * Retrieve a list of Inventory Summaries.
-   * 
+   *
    * @param depotId ID of the depot
    * @return List of Inventory summaries.
    */
@@ -67,7 +64,7 @@ public class InventorySummaryResource {
 
   /**
    * Delete an Inventory summary from the Depot.
-   * 
+   *
    * @param depotId ID of the depot
    * @param summaryId ID of the inventory summary.
    */
@@ -80,7 +77,7 @@ public class InventorySummaryResource {
 
   /**
    * Create a new Inventory Summary.
-   * 
+   *
    * @param summary Summary information body.
    * @param depotId ID of depot to add to.
    * @return
@@ -101,7 +98,7 @@ public class InventorySummaryResource {
 
   /**
    * Update an existing inventory summary.
-   * 
+   *
    * @param summary Summary details.
    * @param depotId Depot ID.
    * @param summaryId ID of the summary.
@@ -113,8 +110,9 @@ public class InventorySummaryResource {
 
     InventorySummary summaryOptional = inventoryRepository.getOne(Long.valueOf(summaryId));
 
-    if (summaryOptional == null)
+    if (summaryOptional == null) {
       return ResponseEntity.notFound().build();
+    }
 
     summary.setId(summaryId);
 

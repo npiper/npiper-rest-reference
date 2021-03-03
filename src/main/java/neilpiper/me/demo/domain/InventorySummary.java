@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /** JPA Domain class to represent an InventorySummary Resource.
- * 
+ *
  * @author neilpiper
  *
  */
