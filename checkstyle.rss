@@ -23,11 +23,11 @@ under the License.
     <link>https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference</link>
     <description>npiper-rest-reference - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2018 - 2019 neilpiper.me</copyright>
+    <copyright>&#169;2018 - 2021 neilpiper.me</copyright>
     <item>
       <title>File: 3,
              Errors: 0,
-             Warnings: 5,
+             Warnings: 69,
              Infos: 0
       </title>
             <link>https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html</link>
@@ -46,27 +46,13 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html#neilpiper.me.demo.repository.InventorySummaryRepository.java">neilpiper/me/demo/repository/InventorySummaryRepository.java</a>
+                  <a href="https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html#neilpiper.me.demo.api.UsersApiController.java">neilpiper/me/demo/api/UsersApiController.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  2
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html#neilpiper.me.demo.controller.InventorySummaryResource.java">neilpiper/me/demo/controller/InventorySummaryResource.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
+                  8
                 </td>
                 <td>
                   0
@@ -74,13 +60,27 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html#neilpiper.me.MicroserviceReference.java">neilpiper/me/MicroserviceReference.java</a>
+                  <a href="https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html#neilpiper.me.demo.api.UsersApiDelegate.java">neilpiper/me/demo/api/UsersApiDelegate.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  2
+                  41
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/npiper/npiper-rest-reference/parent.pom/rest.microservice.base/npiper-rest-reference/checkstyle.html#neilpiper.me.demo.api.UsersApi.java">neilpiper/me/demo/api/UsersApi.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  20
                 </td>
                 <td>
                   0

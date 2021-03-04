@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * Rest API for the InventorySummary Resource.
- * 
+ *
  * @author neilpiper
  *
  */
@@ -29,7 +29,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
   /**
    * Get a summary by ID.
-   * 
+   *
    * @param depotId ID for the depot
    * @param summaryId ID for the summary.
    * @return
@@ -37,18 +37,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
   @GetMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
   public ResponseEntity&lt;InventorySummary&gt; getSummaryById(@PathVariable String depotId,
       @PathVariable String summaryId) {
-<span class="fc" id="L40">    InventorySummary summary = inventoryRepository.findOne(Long.parseLong(summaryId));</span>
 
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">    if (summary == null) {</span>
-<span class="nc" id="L43">      return ResponseEntity.notFound().build();</span>
+    try {
+<span class="fc" id="L42">      InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));</span>
+<span class="fc" id="L43">      return ResponseEntity.ok(summary);</span>
+<span class="nc" id="L44">    } catch (javax.persistence.EntityNotFoundException nfe) {</span>
+<span class="nc" id="L45">      return ResponseEntity.notFound().build();</span>
     }
-<span class="fc" id="L45">    return ResponseEntity.ok(summary);</span>
+
 
   }
 
   /**
    * Retrieve a list of Inventory Summaries.
-   * 
+   *
    * @param depotId ID of the depot
    * @return List of Inventory summaries.
    */
@@ -57,23 +59,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
   // @RequestMapping(value = &quot;/depot/{depotId}/inventory_summaries&quot;, method = RequestMethod.GET)
   @GetMapping(&quot;/depot/{depotId}/inventory_summaries&quot;)
   public List&lt;InventorySummary&gt; retrieveInventorySummaries(@PathVariable String depotId) {
-<span class="nc" id="L60">    return inventoryRepository.findAll();</span>
+<span class="nc" id="L62">    return inventoryRepository.findAll();</span>
   }
 
   /**
    * Delete an Inventory summary from the Depot.
-   * 
+   *
    * @param depotId ID of the depot
    * @param summaryId ID of the inventory summary.
    */
   @DeleteMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
   public void deleteStudent(@PathVariable long depotId, @PathVariable long summaryId) {
-<span class="nc" id="L71">    inventoryRepository.delete(summaryId);</span>
-<span class="nc" id="L72">  }</span>
+
+<span class="nc" id="L74">    inventoryRepository.deleteById(Long.valueOf(summaryId));</span>
+
+<span class="nc" id="L76">  }</span>
 
   /**
    * Create a new Inventory Summary.
-   * 
+   *
    * @param summary Summary information body.
    * @param depotId ID of depot to add to.
    * @return
@@ -82,19 +86,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
   public ResponseEntity&lt;Object&gt; createStudent(@RequestBody InventorySummary summary,
       @PathVariable long depotId) {
 
-<span class="nc" id="L85">    InventorySummary savedSummary = inventoryRepository.save(summary);</span>
+<span class="nc" id="L89">    InventorySummary savedSummary = inventoryRepository.save(summary);</span>
 
     // Return a location with the new Id
-<span class="nc" id="L88">    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;)</span>
-<span class="nc" id="L89">        .buildAndExpand(savedSummary.getId()).toUri();</span>
+<span class="nc" id="L92">    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;)</span>
+<span class="nc" id="L93">        .buildAndExpand(savedSummary.getId()).toUri();</span>
 
-<span class="nc" id="L91">    return ResponseEntity.created(location).build();</span>
+<span class="nc" id="L95">    return ResponseEntity.created(location).build();</span>
 
   }
 
   /**
    * Update an existing inventory summary.
-   * 
+   *
    * @param summary Summary details.
    * @param depotId Depot ID.
    * @param summaryId ID of the summary.
@@ -104,16 +108,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
   public ResponseEntity&lt;Object&gt; updateInventorySummary(@RequestBody InventorySummary summary,
       @PathVariable long depotId, @PathVariable long summaryId) {
 
-<span class="nc" id="L107">    InventorySummary summaryOptional = inventoryRepository.findOne(summaryId);</span>
+<span class="nc" id="L111">    InventorySummary summaryOptional = inventoryRepository.getOne(Long.valueOf(summaryId));</span>
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">    if (summaryOptional == null)</span>
-<span class="nc" id="L110">      return ResponseEntity.notFound().build();</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">    if (summaryOptional == null) {</span>
+<span class="nc" id="L114">      return ResponseEntity.notFound().build();</span>
+    }
 
-<span class="nc" id="L112">    summary.setId(summaryId);</span>
+<span class="nc" id="L117">    summary.setId(summaryId);</span>
 
-<span class="nc" id="L114">    inventoryRepository.save(summaryOptional);</span>
+<span class="nc" id="L119">    inventoryRepository.save(summaryOptional);</span>
 
-<span class="nc" id="L116">    return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L121">    return ResponseEntity.noContent().build();</span>
   }
 
 

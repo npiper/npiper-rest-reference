@@ -1,4 +1,6 @@
 neilpiper.me
+neilpiper.me.demo.api
 neilpiper.me.demo.controller
 neilpiper.me.demo.domain
 neilpiper.me.demo.repository
+neilpiper.me.demo.service

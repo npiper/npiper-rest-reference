@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsersApiController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">npiper-rest-reference</a> &gt; <a href="index.source.html" class="el_package">neilpiper.me.demo.api</a> &gt; <span class="el_source">UsersApiController.java</span></div><h1>UsersApiController.java</h1><pre class="source lang-java linenums">package neilpiper.me.demo.api;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@javax.annotation.Generated(value = &quot;io.swagger.codegen.v3.generators.java.SpringCodegen&quot;, date = &quot;2021-03-04T01:30:16.773Z[UTC]&quot;)
+@RestController
+public class UsersApiController implements UsersApi {
+
+    private final UsersApiDelegate delegate;
+
+    @org.springframework.beans.factory.annotation.Autowired
+<span class="fc" id="L12">    public UsersApiController(UsersApiDelegate delegate) {</span>
+<span class="fc" id="L13">        this.delegate = delegate;</span>
+<span class="fc" id="L14">    }</span>
+
+    @Override
+    public UsersApiDelegate getDelegate() {
+<span class="fc" id="L18">        return delegate;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
