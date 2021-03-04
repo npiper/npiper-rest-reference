@@ -6,6 +6,7 @@
 .pmd
 .pmdruleset.xml
 .factorypath
+.java-version
 
 # Maven files
 /target
