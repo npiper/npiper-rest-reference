@@ -1,5 +1,6 @@
 package neilpiper.me.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,7 +13,13 @@ import lombok.Setter;
  *
  */
 @Entity
-public class InventorySummary {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class InventorySummary implements java.io.Serializable {
+
+  /**
+   * Default serial version ID.
+   */
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue

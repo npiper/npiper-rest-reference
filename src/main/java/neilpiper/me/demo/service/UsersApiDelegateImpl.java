@@ -7,7 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Implementation of the UsersApiDelegate for the Users API. 
+ *
+ * @author neilpiper
+ *
+ */
 @Service
 public class UsersApiDelegateImpl implements UsersApiDelegate {
 

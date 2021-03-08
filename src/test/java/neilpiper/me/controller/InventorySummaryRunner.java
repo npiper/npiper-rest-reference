@@ -1,31 +1,33 @@
 package neilpiper.me.controller;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.intuit.karate.junit4.Karate;
+import cucumber.api.CucumberOptions;
 import neilpiper.me.MicroserviceReference;
 
-@RunWith(Karate.class)
+//@RunWith(Karate.class)
+//@CucumberOptions(features = "classpath:neilpiper/me/controller/karate")
 public class InventorySummaryRunner {
-
-  static ConfigurableApplicationContext appContext;
-
+  
+  @Autowired
+  MicroserviceReference refClass;
+  
+  
   @BeforeClass
-  public static void startup() {
-    System.setProperty("server.port", "8090");
-    appContext = SpringApplication.run(MicroserviceReference.class);
-
-
+  public static void setup()
+  {
+  //  System.setProperty("server.port", "8090");
+   // MicroserviceReference.main(new String[] {});
   }
-
-  @AfterClass
-  public static void tearDown() {
-    InventorySummaryRunner.appContext.stop();
-  }
+  
 
 
+ @org.junit.Before
+ public void preTest()
+ {
+   
+ }
 
 }
