@@ -7,20 +7,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Implementation of the UsersApiDelegate for the Users API. 
+ *
+ * @author neilpiper
+ *
+ */
 @Service
-<span class="fc" id="L12">public class UsersApiDelegateImpl implements UsersApiDelegate {</span>
+<span class="fc" id="L17">public class UsersApiDelegateImpl implements UsersApiDelegate {</span>
 
 
   @Override
   public ResponseEntity&lt;List&lt;String&gt;&gt; usersGet() {
 
     try {
-<span class="fc" id="L19">      List&lt;String&gt; listOfUsers = Arrays.asList(new String[] {&quot;User A&quot;, &quot;User B&quot;});</span>
-<span class="fc" id="L20">      return new ResponseEntity&lt;List&lt;String&gt;&gt;(listOfUsers, HttpStatus.OK);</span>
-<span class="nc" id="L21">    } catch (RuntimeException e) {</span>
-<span class="nc" id="L22">      log.error(&quot;Couldn't serialize response for content type application/json&quot;, e);</span>
-<span class="nc" id="L23">      return new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</span>
+<span class="fc" id="L24">      List&lt;String&gt; listOfUsers = Arrays.asList(new String[] {&quot;User A&quot;, &quot;User B&quot;});</span>
+<span class="fc" id="L25">      return new ResponseEntity&lt;List&lt;String&gt;&gt;(listOfUsers, HttpStatus.OK);</span>
+<span class="nc" id="L26">    } catch (RuntimeException e) {</span>
+<span class="nc" id="L27">      log.error(&quot;Couldn't serialize response for content type application/json&quot;, e);</span>
+<span class="nc" id="L28">      return new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</span>
     }
 
   }

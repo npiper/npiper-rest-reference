@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import neilpiper.me.demo.domain.InventorySummary;
 import neilpiper.me.demo.repository.InventorySummaryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +24,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  *
  */
 @RestController
-<span class="fc" id="L25">public class InventorySummaryResource {</span>
+<span class="fc" id="L27">public class InventorySummaryResource {</span>
+
+<span class="fc" id="L29">  Logger log = LoggerFactory.getLogger(InventorySummaryResource.class);</span>
+
 
   @Autowired
   private InventorySummaryRepository inventoryRepository;
@@ -32,18 +37,28 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
    *
    * @param depotId ID for the depot
    * @param summaryId ID for the summary.
-   * @return
+   * @return JSON Response Entity for InventorySummary.
    */
   @GetMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
   public ResponseEntity&lt;InventorySummary&gt; getSummaryById(@PathVariable String depotId,
       @PathVariable String summaryId) {
 
     try {
-<span class="fc" id="L42">      InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));</span>
-<span class="fc" id="L43">      return ResponseEntity.ok(summary);</span>
-<span class="nc" id="L44">    } catch (javax.persistence.EntityNotFoundException nfe) {</span>
-<span class="nc" id="L45">      return ResponseEntity.notFound().build();</span>
+<span class="fc" id="L47">      InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));</span>
+
+<span class="fc" id="L49">      ResponseEntity&lt;InventorySummary&gt; cast = ResponseEntity.ok(summary);</span>
+
+      // Long id = cast.getBody().getId();
+<span class="fc" id="L52">      String loc = cast.getBody().getInventoryLocation();</span>
+
+<span class="fc" id="L54">      log.info(&quot;Returning location: &quot; + loc);</span>
+
+<span class="fc" id="L56">      return cast;</span>
+
+<span class="fc" id="L58">    } catch (javax.persistence.EntityNotFoundException nfe) {</span>
+<span class="fc" id="L59">      return ResponseEntity.notFound().build();</span>
     }
+
 
 
   }
@@ -59,7 +74,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
   // @RequestMapping(value = &quot;/depot/{depotId}/inventory_summaries&quot;, method = RequestMethod.GET)
   @GetMapping(&quot;/depot/{depotId}/inventory_summaries&quot;)
   public List&lt;InventorySummary&gt; retrieveInventorySummaries(@PathVariable String depotId) {
-<span class="nc" id="L62">    return inventoryRepository.findAll();</span>
+<span class="fc" id="L77">    return inventoryRepository.findAll();</span>
   }
 
   /**
@@ -71,28 +86,28 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
   @DeleteMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
   public void deleteStudent(@PathVariable long depotId, @PathVariable long summaryId) {
 
-<span class="nc" id="L74">    inventoryRepository.deleteById(Long.valueOf(summaryId));</span>
+<span class="nc" id="L89">    inventoryRepository.deleteById(Long.valueOf(summaryId));</span>
 
-<span class="nc" id="L76">  }</span>
+<span class="nc" id="L91">  }</span>
 
   /**
    * Create a new Inventory Summary.
    *
    * @param summary Summary information body.
    * @param depotId ID of depot to add to.
-   * @return
+   * @return JSON Response Entity for InventorySummary 201.
    */
   @PostMapping(&quot;/depot/{depotId}/inventory_summaries&quot;)
   public ResponseEntity&lt;Object&gt; createStudent(@RequestBody InventorySummary summary,
       @PathVariable long depotId) {
 
-<span class="nc" id="L89">    InventorySummary savedSummary = inventoryRepository.save(summary);</span>
+<span class="nc" id="L104">    InventorySummary savedSummary = inventoryRepository.save(summary);</span>
 
     // Return a location with the new Id
-<span class="nc" id="L92">    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;)</span>
-<span class="nc" id="L93">        .buildAndExpand(savedSummary.getId()).toUri();</span>
+<span class="nc" id="L107">    URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;)</span>
+<span class="nc" id="L108">        .buildAndExpand(savedSummary.getId()).toUri();</span>
 
-<span class="nc" id="L95">    return ResponseEntity.created(location).build();</span>
+<span class="nc" id="L110">    return ResponseEntity.created(location).build();</span>
 
   }
 
@@ -102,23 +117,23 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
    * @param summary Summary details.
    * @param depotId Depot ID.
    * @param summaryId ID of the summary.
-   * @return
+   * @return JSON Response Entity for InventorySummary PUT.
    */
   @PutMapping(&quot;/depot/{depotId}/inventory_summaries/{summaryId}&quot;)
   public ResponseEntity&lt;Object&gt; updateInventorySummary(@RequestBody InventorySummary summary,
       @PathVariable long depotId, @PathVariable long summaryId) {
 
-<span class="nc" id="L111">    InventorySummary summaryOptional = inventoryRepository.getOne(Long.valueOf(summaryId));</span>
+<span class="nc" id="L126">    InventorySummary summaryOptional = inventoryRepository.getOne(Long.valueOf(summaryId));</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">    if (summaryOptional == null) {</span>
-<span class="nc" id="L114">      return ResponseEntity.notFound().build();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">    if (summaryOptional == null) {</span>
+<span class="nc" id="L129">      return ResponseEntity.notFound().build();</span>
     }
 
-<span class="nc" id="L117">    summary.setId(summaryId);</span>
+<span class="nc" id="L132">    summary.setId(summaryId);</span>
 
-<span class="nc" id="L119">    inventoryRepository.save(summaryOptional);</span>
+<span class="nc" id="L134">    inventoryRepository.save(summaryOptional);</span>
 
-<span class="nc" id="L121">    return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L136">    return ResponseEntity.noContent().build();</span>
   }
 
 

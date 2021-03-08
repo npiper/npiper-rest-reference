@@ -35,8 +35,8 @@ import org.springframework.http.codec.ServerCodecConfigurer;
    * @param args arguments
    */
   public static void main(String[] args) {
-<span class="nc" id="L38">    SpringApplication.run(MicroserviceReference.class, args);</span>
-<span class="nc" id="L39">  }</span>
+<span class="fc" id="L38">    SpringApplication.run(MicroserviceReference.class, args);</span>
+<span class="fc" id="L39">  }</span>
 
 
 
@@ -44,7 +44,7 @@ import org.springframework.http.codec.ServerCodecConfigurer;
    * Returns an OpenAPI definition of the API service.
    *
    * @param appVersion Springdoc version (3.0 default)
-   * @return
+   * @return OpenAPI Bean
    */
   @Bean
   public OpenAPI customOpenApi(@Value(&quot;${springdoc.version}&quot;) String appVersion) {
@@ -56,7 +56,7 @@ import org.springframework.http.codec.ServerCodecConfigurer;
   /**
    * Configures a serverCodec instance for the Application.
    *
-   * @return
+   * @return ServerCodecConfigurer bean
    */
   @Bean
   public ServerCodecConfigurer serverCodecConfigurer() {
