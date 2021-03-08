@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import neilpiper.me.demo.domain.InventorySummary;
 import neilpiper.me.demo.repository.InventorySummaryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +26,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 public class InventorySummaryResource {
 
+  Logger log = LoggerFactory.getLogger(InventorySummaryResource.class);
+
+
   @Autowired
   private InventorySummaryRepository inventoryRepository;
 
@@ -32,7 +37,7 @@ public class InventorySummaryResource {
    *
    * @param depotId ID for the depot
    * @param summaryId ID for the summary.
-   * @return
+   * @return JSON Response Entity for InventorySummary.
    */
   @GetMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public ResponseEntity<InventorySummary> getSummaryById(@PathVariable String depotId,
@@ -40,10 +45,20 @@ public class InventorySummaryResource {
 
     try {
       InventorySummary summary = inventoryRepository.getOne(Long.parseLong(summaryId));
-      return ResponseEntity.ok(summary);
+
+      ResponseEntity<InventorySummary> cast = ResponseEntity.ok(summary);
+
+      // Long id = cast.getBody().getId();
+      String loc = cast.getBody().getInventoryLocation();
+
+      log.info("Returning location: " + loc);
+
+      return cast;
+
     } catch (javax.persistence.EntityNotFoundException nfe) {
       return ResponseEntity.notFound().build();
     }
+
 
 
   }
@@ -80,7 +95,7 @@ public class InventorySummaryResource {
    *
    * @param summary Summary information body.
    * @param depotId ID of depot to add to.
-   * @return
+   * @return JSON Response Entity for InventorySummary 201.
    */
   @PostMapping("/depot/{depotId}/inventory_summaries")
   public ResponseEntity<Object> createStudent(@RequestBody InventorySummary summary,
@@ -102,7 +117,7 @@ public class InventorySummaryResource {
    * @param summary Summary details.
    * @param depotId Depot ID.
    * @param summaryId ID of the summary.
-   * @return
+   * @return JSON Response Entity for InventorySummary PUT.
    */
   @PutMapping("/depot/{depotId}/inventory_summaries/{summaryId}")
   public ResponseEntity<Object> updateInventorySummary(@RequestBody InventorySummary summary,

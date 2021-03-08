@@ -44,7 +44,7 @@ public class MicroserviceReference {
    * Returns an OpenAPI definition of the API service.
    *
    * @param appVersion Springdoc version (3.0 default)
-   * @return
+   * @return OpenAPI Bean
    */
   @Bean
   public OpenAPI customOpenApi(@Value("${springdoc.version}") String appVersion) {
@@ -56,7 +56,7 @@ public class MicroserviceReference {
   /**
    * Configures a serverCodec instance for the Application.
    *
-   * @return
+   * @return ServerCodecConfigurer bean
    */
   @Bean
   public ServerCodecConfigurer serverCodecConfigurer() {
